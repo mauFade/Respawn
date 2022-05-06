@@ -1,6 +1,7 @@
 // Imports
 import { Model, DataTypes } from "sequelize";
 import database from "../config/database";
+import Post from "./Post";
 
 interface Attributes {
   id?: number;
