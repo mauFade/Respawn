@@ -4,6 +4,9 @@ import { Request, Response } from "express";
 // Import models
 import Post from "../models/Post";
 
+// Import classes
+import { CSuccess, CError } from "../classes/responses";
+
 class PostInstant {
   /**
    * Rota para criação de um novo post
@@ -42,7 +45,7 @@ class PostInstant {
       });
 
       // Retorna sucesso
-      return response.status(200).send({ success: true, data: post });
+      return response.status(200).send(new CSuccess(true, post));
 
       // Caso algo dê errado
     } catch (error) {
