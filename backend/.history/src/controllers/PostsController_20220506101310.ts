@@ -1,6 +1,5 @@
 // Import modules
 import { Request, Response } from "express";
-import IPost from "../interfaces/posts";
 
 // Import models
 import Post from "../models/Post";
@@ -43,7 +42,7 @@ class PostInstant {
       }
 
       // Cria post no banco
-      const post: IPost = await Post.create({
+      const post = await Post.create({
         name: name,
         description: description,
         specificGame: specificGame,
@@ -125,7 +124,7 @@ class PostInstant {
       }
 
       // Atualiza o post
-      await Post.update(
+      const updatedPost = await Post.update(
         {
           name: newName,
           description: newDescription,

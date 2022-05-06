@@ -1,13 +1,11 @@
 // Imports interfaces
 import { Request, Response } from "express";
-import IUser from "../interfaces/users";
 
 // Import models
 import User from "../models/User";
 
 // Import classes
 import { CError, CSuccess } from "../classes/responses";
-
 class UserInstant {
   /**
    * Rota para criação de um novo usuário
@@ -110,7 +108,7 @@ class UserInstant {
       }
 
       // Cria o usuário
-      const user: IUser = await User.create({
+      const user = await User.create({
         name,
         email,
         gamertag,
@@ -138,7 +136,7 @@ class UserInstant {
   async read(request: Request, response: Response) {
     try {
       // Busca os usuários do banco
-      const users: IUser[] = await User.findAll();
+      const users = await User.findAll();
 
       // Retorna os usuários
       return response.status(200).send(new CSuccess(true, users));
@@ -253,9 +251,10 @@ class UserInstant {
       // Se não for enviado um email
       if (!userEmail) {
         // Retorna erro
-        return response
-          .status(403)
-          .send(new CError("Error at method delete.", "No email sent."));
+        return response.status(403).send({
+          message: "Error at method delete.",
+          error: "User email not found.",
+        });
       }
 
       // Busca um usuário do banco
@@ -264,20 +263,21 @@ class UserInstant {
       // Caso não encontrar um usuário
       if (!targetUser) {
         // Retorna erro
-        return response
-          .status(404)
-          .send(new CError("Error at method delete.", "User not found."));
+        return response.status(404).send({
+          message: "Error at method delete.",
+          error: "User not found.",
+        });
       }
 
       // Apaga o usuário
-      await User.destroy({
+      const deletedUser = await User.destroy({
         where: { email: userEmail },
       });
 
       // Retorna sucesso
       return response
         .status(200)
-        .send(new CSuccess(true, "User deleted successfully!"));
+        .send({ success: true, data: "User deleted successfully!" });
 
       // Caso algo dê errado
     } catch (error) {
@@ -290,3 +290,4 @@ class UserInstant {
 }
 
 export default new UserInstant();
+

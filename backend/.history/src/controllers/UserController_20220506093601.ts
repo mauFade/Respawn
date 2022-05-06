@@ -1,13 +1,11 @@
 // Imports interfaces
 import { Request, Response } from "express";
-import IUser from "../interfaces/users";
 
 // Import models
 import User from "../models/User";
 
 // Import classes
 import { CError, CSuccess } from "../classes/responses";
-
 class UserInstant {
   /**
    * Rota para criação de um novo usuário
@@ -110,7 +108,7 @@ class UserInstant {
       }
 
       // Cria o usuário
-      const user: IUser = await User.create({
+      const user = await User.create({
         name,
         email,
         gamertag,
@@ -138,7 +136,7 @@ class UserInstant {
   async read(request: Request, response: Response) {
     try {
       // Busca os usuários do banco
-      const users: IUser[] = await User.findAll();
+      const users = await User.findAll();
 
       // Retorna os usuários
       return response.status(200).send(new CSuccess(true, users));
@@ -270,7 +268,7 @@ class UserInstant {
       }
 
       // Apaga o usuário
-      await User.destroy({
+      const deletedUser = await User.destroy({
         where: { email: userEmail },
       });
 

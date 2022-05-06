@@ -1,6 +1,5 @@
 // Import modules
 import { Request, Response } from "express";
-import IPost from "../interfaces/posts";
 
 // Import models
 import Post from "../models/Post";
@@ -43,7 +42,7 @@ class PostInstant {
       }
 
       // Cria post no banco
-      const post: IPost = await Post.create({
+      const post = await Post.create({
         name: name,
         description: description,
         specificGame: specificGame,
@@ -86,8 +85,6 @@ class PostInstant {
    * @param newName Novo título
    * @param newDescription Novo corpo
    * @param newSpecificGame Novoa jogo específico
-   * @param id ID do post
-   * @returns Updated post
    */
   async update(request: Request, response: Response) {
     try {
@@ -125,7 +122,7 @@ class PostInstant {
       }
 
       // Atualiza o post
-      await Post.update(
+      const updatedPost = await Post.update(
         {
           name: newName,
           description: newDescription,
@@ -137,55 +134,7 @@ class PostInstant {
       );
 
       // Retorna sucesso
-      return response
-        .status(200)
-        .send(new CSuccess(true, "Post updated successfully."));
-      // Caso algo dê errado
-    } catch (error) {
-      // Retorna erro
-      return response
-        .status(500)
-        .send({ message: "Error at method update.", error: error });
-    }
-  }
-
-  /**
-   * Rota para fazer delete de um post
-   * @param id ID do post
-   * @returns Deleted post
-   */
-  async delete(request: Request, response: Response) {
-    try {
-      // Recebe id do post pela query
-      const { id }: { id: number } = Object(request["query"]);
-
-      // Caso não seja enviado um id
-      if (!id) {
-        // Retorna erro
-        return response
-          .status(403)
-          .send(new CError("Error at method delete.", "No post id provided."));
-      }
-
-      // Busca um post no banco
-      const post = await Post.findOne({ where: { id: id } });
-
-      // se não encontrar nenhum post
-      if (!post) {
-        // Retorna erro
-        return response
-          .status(404)
-          .send(new CError("Error at method delete.", "Post not found."));
-      }
-
-      // Exclui o post
-      await Post.destroy({ where: { id: id } });
-
-      // Retorna sucesso
-      return response
-        .status(200)
-        .send(new CSuccess(true, "Post deleted successfully"));
-
+      return response.status(200).send(new CSuccess(true, updatedPost));
       // Caso algo dê errado
     } catch (error) {
       // Retorna erro

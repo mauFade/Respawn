@@ -18,6 +18,6 @@ router.delete("/user/instant", UserInstant.delete);
 router.post("/posts/instant", PostInstant.create);
 router.get("/posts/instant", PostInstant.read);
 router.put("/posts/instant", PostInstant.update);
-router.delete("/posts/instant", PostInstant.delete);
 
 export default router;
+
