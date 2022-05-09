@@ -1,5 +1,6 @@
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, Association } from "sequelize";
 import database from "../config/database";
+import User from "./User";
 
 interface Attributes {
   id?: number;
@@ -7,6 +8,7 @@ interface Attributes {
   description: string;
   specificGame?: string;
   likesCount?: number;
+  user_id?: number;
 }
 
 class Post extends Model<Attributes> implements Attributes {
@@ -15,6 +17,11 @@ class Post extends Model<Attributes> implements Attributes {
   declare description: string;
   declare specificGame?: string;
   declare likesCount?: number;
+  declare user_id?: number;
+
+  declare static associations: {
+    user: Association<Post, User>;
+  };
 }
 
 Post.init(
@@ -42,6 +49,9 @@ Post.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 0,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
     },
   },
   {

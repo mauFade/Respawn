@@ -29,6 +29,9 @@ class PostInstant {
         specificGame: string;
       } = Object(request["body"]);
 
+      // Recebe id do usuário pela query
+      const { user_id }: { user_id: number } = Object(request["query"]);
+
       // Caso não seja enviado algum dado necessário
       if (!name || !description) {
         // Retorna erro
@@ -47,6 +50,7 @@ class PostInstant {
         name: name,
         description: description,
         specificGame: specificGame,
+        user_id: user_id,
       });
 
       // Retorna sucesso
